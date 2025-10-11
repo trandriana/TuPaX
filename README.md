@@ -3,13 +3,9 @@
 This code implements a semi-implicit (IMEX) finite-volume scheme for the Gray–Scott reaction–diffusion model using FiPy.
 
 We solve the coupled reaction-diffusion equations
-$$
-\begin{align*}
-\frac{\partial u}{\partial t} &= d_u \nabla^2 u - u v^2 + F (1 - u), 
-\\
-\frac{\partial v}{\partial t} &= d_v \nabla^2 v + u v^2 - (F + k) v,
-\end{align*}
-$$
+
+$$\partial_t u = d_u \Delta u - u v^2 + F (1 - u),$$ $$\partial_t v = d_v \Delta v + u v^2 - (F + k) v,$$
+
 with Neumann boundary conditions (the defaul on FiPy), where:
 
 | Symbol | Meaning |
