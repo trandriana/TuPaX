@@ -1,7 +1,16 @@
 ```yaml
 cff-version: 1.2.0
 title: Gray-Scott
-message: "If you use this software, please cite it."
+message: "If you use this software, please cite
+@misc{randrianasolo2025convergence,
+      title={Convergence and error analysis of a semi-implicit finite volume scheme for the Gray--Scott system}, 
+      author={Tsiry Avisoa Randrianasolo},
+      year={2025},
+      eprint={2508.18910},
+      archivePrefix={arXiv},
+      primaryClass={math.NA},
+      url={https://arxiv.org/abs/2508.18910}, 
+}."
 type: software
 authors:
 - family-names: Randrianasolo
