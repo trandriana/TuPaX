@@ -5,24 +5,26 @@ This code implements a semi-implicit (IMEX) finite-volume scheme for the Gray–
 ---
 
 ## Project structure
+```
 gray_scott_to_ZENODO/
-|-- src/gray_scott/
-|   |-- __init__.py
-|   |-- compute.py        # CLI: gray-scott-compute (run simulation)
-|   `-- animate.py        # CLI: gray-scott-animate (build MP4/GIF from NPZ)
-|
-|-- examples/
-|   |-- run_default.sh
-|   `-- make_video.sh
-|
-|-- output_images/        # PNG frames (created at runtime)
-|-- output_solution/      # NPZ/MAT snapshots, MP4/GIF (created at runtime)
-|
-|-- README.md
-|-- LICENSE
-|-- pyproject.toml
-|-- CITATION.cff
-`-- .gitignore
+├── src/gray_scott/
+│   ├── __init__.py
+│   ├── compute.py        # CLI: gray-scott-compute (run simulation)
+│   └── animate.py        # CLI: gray-scott-animate (build MP4/GIF from NPZ)
+│
+├── examples/
+│   ├── run_default.sh
+│   └── make_video.sh
+│
+├── output_images/        # PNG frames (created at runtime)
+├── output_solution/      # NPZ/MAT snapshots, MP4/GIF (created at runtime)
+│
+├── README.md
+├── LICENSE
+├── pyproject.toml
+├── CITATION.cff
+└── .gitignore
+```
 
 
 ## Installation
