@@ -4,11 +4,11 @@ This code implements a semi-implicit (IMEX) finite-volume scheme for the Gray–
 
 We solve the coupled reaction-diffusion equations
 $$
-\begin{aligned}
+\begin{align*}
 \frac{\partial u}{\partial t} &= d_u \nabla^2 u - u v^2 + F (1 - u), 
 \\
 \frac{\partial v}{\partial t} &= d_v \nabla^2 v + u v^2 - (F + k) v,
-\end{aligned}
+\end{align*}
 $$
 with Neumann boundary conditions (the defaul on FiPy), where:
 
