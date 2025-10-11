@@ -30,7 +30,7 @@ gray_scott_IMEX/
 │   └── make_video.sh
 │
 ├── output_images/        # PNG frames (created at runtime)
-├── output_solution/      # NPZ/MAT snapshots, MP4/GIF (created at runtime)
+├── output_solution/      # NPZ/MAT snapshots, MP4 (created at runtime)
 │
 ├── README.md
 ├── LICENSE
