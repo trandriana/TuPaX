@@ -2,15 +2,32 @@
 
 This code implements a semi-implicit (IMEX) finite-volume scheme for the Gray–Scott reaction–diffusion model using FiPy.
 
+We solve the coupled reaction-diffusion equations
+$$
+\begin{aligned}
+\frac{\partial u}{\partial t} &= d_u \nabla^2 u - u v^2 + F (1 - u), 
+\\
+\frac{\partial v}{\partial t} &= d_v \nabla^2 v + u v^2 - (F + k) v,
+\end{aligned}
+$$
+with Neumann boundary conditions (the defaul on FiPy), where:
+
+| Symbol | Meaning |
+|:-------:|:--------|
+| $u, v$ | species concentrations |
+| $d_u, d_v$ | diffusion coefficients |
+| $F, k$ | feed and kill rates |
+
+
 ---
 
 ## Project structure
 ```
-gray_scott_to_ZENODO/
+gray_scott_IMEX/
 ├── src/gray_scott/
 │   ├── __init__.py
 │   ├── compute.py        # CLI: gray-scott-compute (run simulation)
-│   └── animate.py        # CLI: gray-scott-animate (build MP4/GIF from NPZ)
+│   └── animate.py        # CLI: gray-scott-animate (build MP4 from NPZ)
 │
 ├── examples/
 │   ├── run_default.sh
