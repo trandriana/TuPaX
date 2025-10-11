@@ -1,4 +1,4 @@
-from src import gray_scott
+import gray_scott
 
 # ---------------------
 # Test functions
