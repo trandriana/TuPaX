@@ -1,0 +1,2 @@
+include README.md LICENSE CITATION.cff .zenodo.json
+recursive-include examples *

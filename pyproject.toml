@@ -1,0 +1,43 @@
+[build-system]
+requires = ['hatchling>=1.25']
+build-backend = 'hatchling.build'
+
+[project]
+name = 'gray-scott-fipy'
+version = '0.1.0'
+description = 'This code implements a semi-implicit (IMEX) finite volume scheme for the Gray--Scott model.'
+readme = 'README.md'
+requires-python = '>=3.11'
+license = { text = 'Apache-2.0' }
+authors = [
+  { name = 'Tsiry Avisoa Randrianasolo', email = 'trandria@math.univ-bielefeld.de' }
+]
+keywords = ['IMEX schemes', 'finite volume methods', 'reaction-diffusion equations', 'Gray-Scott model', 'pattern formation', 'FiPy']
+dependencies = [
+  'fipy>=4.0.1',
+  'matplotlib>=3.6',
+  'scipy>=1.10',
+  'numpy>=1.26'
+]
+
+[project.urls]
+Homepage = 'https://github.com/trandriana/gray_scott'
+Issues   = 'https://github.com/trandriana/gray_scott/issues'
+
+[project.scripts]
+gray-scott-compute  = 'gray_scott.compute:main'
+gray-scott-animate  = 'gray_scott.animate:main'
+
+[tool.hatch.build.targets.wheel]
+packages = ['src/gray_scott']
+
+[tool.hatch.build.targets.sdist]
+include = [
+  'src/gray_scott',
+  'README.md',
+  'LICENSE',
+  'CITATION.cff',
+  '.zenodo.json',
+  'MANIFEST.in',
+  'examples'
+]

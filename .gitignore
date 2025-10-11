@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.dist/
+.eggs/
+/venv/
+.env
+
+
+# Outputs
+output_images/
+output_solution/
+*.png
+*.npz
+*.mat
+
+
+# IDEs
+.vscode/
+.idea/
