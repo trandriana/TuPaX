@@ -20,6 +20,7 @@ dependencies = [
   'numpy>=1.26',
   'ffmpeg-python',
   'imageio[ffmpeg]',
+  'pytest>=7.4'
 ]
 
 [project.urls]
