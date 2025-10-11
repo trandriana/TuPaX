@@ -89,11 +89,11 @@ gray-scott-animate <path/to/snapshots.npz> [OPTIONS]
 | `--cmap NAME`        | Matplotlib colormap                     | `turbo`                          |
 | `--fps INT`          | Frames per second                       | `15`                             |
 | `--dpi INT`          | Render DPI                              | `200`                            |
-| `--out PATH`         | Output file (`.mp4` or `.gif`)          | `output_solution/gray_scott.mp4` |
+| `--out PATH`         | Output file (`.mp4`)          | `output_solution/gray_scott.mp4` |
 
 Example:
 ```
 gray-scott-animate output_solution/snapshots.npz \
-  --out output_solution/gray_scott.mp4 --fps 15 --dpi 200 \
+  --out output_solution/gray_scott.mp4 --fps 15 \
   --which both --use-fixed-limits --vmin 0.0 --vmax 1.0
 ```
