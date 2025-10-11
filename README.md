@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/1074261727.svg)](https://doi.org/10.5281/zenodo.17328875)
+
 # Gray-Scott IMEX-FiPy
 
 This code implements a semi-implicit (IMEX) finite-volume scheme for the Gray–Scott reaction–diffusion model using FiPy.
