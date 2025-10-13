@@ -1,4 +1,5 @@
 [![DOI](https://zenodo.org/badge/1074261727.svg)](https://doi.org/10.5281/zenodo.17328875)
+[![arXiv](https://img.shields.io/badge/arXiv-2508.18910-b31b1b.svg)](https://doi.org/10.48550/arXiv.2508.18910)
 
 # Gray-Scott IMEX-FiPy
 
