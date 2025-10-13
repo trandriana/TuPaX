@@ -51,7 +51,6 @@ include = [
   'README.md',
   'LICENSE',
   'CITATION.cff',
-  '.zenodo.json',
   'MANIFEST.in',
   'examples'
 ]
