@@ -1,9 +1,10 @@
+<img src="https://github.com/user-attachments/assets/007e1a3c-e4e8-4b56-8442-7302773b8c9c"
+           alt="TuPaX logo" width="256" height="256">     
 [![DOI](https://zenodo.org/badge/1074261727.svg)](https://doi.org/10.5281/zenodo.17328875)
 [![arXiv](https://img.shields.io/badge/arXiv-2508.18910-b31b1b.svg)](https://doi.org/10.48550/arXiv.2508.18910)
 [![Powered by FiPy](https://img.shields.io/badge/Powered%20by-FiPy-1f425f.svg)](https://github.com/usnistgov/fipy)
 
-
-# Gray-Scott IMEX-FiPy
+# Turing Pattern eXperiments
 
 This code implements a semi-implicit (IMEX) finite-volume scheme for the Gray–Scott reaction–diffusion model using FiPy.
 
@@ -11,7 +12,7 @@ We solve the coupled reaction-diffusion equations
 
 $$\partial_t u = d_u \Delta u - u v^2 + F (1 - u),$$ $$\partial_t v = d_v \Delta v + u v^2 - (F + k) v,$$
 
-with Neumann boundary conditions (the defaul on FiPy), where:
+with Neumann boundary conditions (by the default on FiPy), where:
 
 | Symbol | Meaning |
 |:-------:|:--------|
