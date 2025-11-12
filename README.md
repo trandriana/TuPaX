@@ -46,17 +46,19 @@ The data assimilation module updates the model state at discrete, possibly spars
 
 ## Project structure
 ```
-TuPaX/
 ├── tests
 │   └── test_import.py
 ├── src
 │   ├── tupax
-│   │   ├── animate.py
+│   │   └── animate.py
 │   └── imex
 │       ├── reconstruct.py
-│       ├── compute.py
+│       └── compute.py
 ├── pyproject.toml
 ├── output_solution
+│   ├── reference_solution.npz
+│   ├── reconstructed_solution.npz
+│   └── observed_solution.npz
 ├── output_images
 ├── output_animations
 ├── examples
