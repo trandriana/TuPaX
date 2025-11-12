@@ -61,9 +61,6 @@ The data assimilation module updates the model state at discrete, possibly spars
 │   └── observed_solution.npz
 ├── output_images
 ├── output_animations
-├── examples
-│   ├── run_default.sh
-│   └── make_video.sh
 ├── README.md
 ├── LICENSE
 └── CITATION.cff
