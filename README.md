@@ -65,7 +65,6 @@ The data assimilation module updates the model state at discrete, possibly spars
 │   ├── run_default.sh
 │   └── make_video.sh
 ├── README.md
-├── MANIFEST.in
 ├── LICENSE
 └── CITATION.cff
 ```
