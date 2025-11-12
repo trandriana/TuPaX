@@ -10,7 +10,7 @@ authors:
     affiliation: 'Bielefeld University, Germany'
 version: '0.1.0'
 license: Apache-2.0
-repository-code: 'https://github.com/trandriana/gray_scott'
+repository-code: 'https://github.com/trandriana/TuPaX'
 references:
   - type: article
     title: >-

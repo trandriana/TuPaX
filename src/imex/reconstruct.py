@@ -241,10 +241,8 @@ def run_simulation(
         Ih_tu = P @ (R @ tu_old)
         Ih_tv = P @ (R @ tv_old)
         
+        activate_v = float((t_ref[step] >= reconstruct_time) and (step % 1000 >= reconstruct_freq))
 
-        activate_v = float((t_ref[step] >= reconstruct_time) and (step % 1000 <= reconstruct_freq))
-    
-        
         # The reconstruction starts only at reconstruct_time (by default 0.0)
         # Source terms
         Stu = CellVariable(mesh=tu.mesh, value=Rtu(tu_old, tv_old, Ih_u, Ih_tu, activate_u*mu_u))
@@ -292,7 +290,7 @@ def run_simulation(
 
     np.savez_compressed(
         os.path.join(output_solution_dir, 'observed_solution.npz'),
-        t=t_ref,
+        t=t_rec,
         u=np.array(snap_Ih_u),
         v=np.array(snap_Ih_v),
         obs_nx=obs_nx
@@ -359,7 +357,7 @@ def main():
     p.add_argument('--obs-nx', type=int, default=24)
     p.add_argument('--mu-u', type=float, default=0.0)
     p.add_argument('--mu-v', type=float, default=1.0)
-    p.add_argument('--n-solution-snapshots', type=int, default=80)
+    p.add_argument('--n-solution-snapshots', type=int, default=81)
     p.add_argument('--n-image-snapshots', type=int, default=5)
     p.add_argument('--reconstruct-time', type=float, default=0.0)
     p.add_argument('--reconstruct-freq', type=int, default=0)

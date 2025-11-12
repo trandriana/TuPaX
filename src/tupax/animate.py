@@ -6,6 +6,7 @@ Author: Tsiry Avisoa Randrianasolo
 # Standard library imports
 # ---------------------
 import os
+import shutil
 
 # import scipy.io
 
@@ -23,6 +24,7 @@ from matplotlib.animation import FuncAnimation, FFMpegWriter
 # ---------------------
 import numpy as np
 import argparse
+import shutil
 
 
 # ---------------------
@@ -30,7 +32,7 @@ import argparse
 # ---------------------
 def make_video(
     output_animations_dir: str = "output_animations",
-    npz_path: str = "output_solution/snapshots.npz",
+    npz_path: str = "output_solution/reference_solution.npz",
     out_path: str = "gray_scott.mp4",
     fps: int = 15,
     dpi: int = 200,
@@ -145,6 +147,12 @@ def make_video(
     anim = FuncAnimation(fig, update, frames=NT, interval=1000 / fps, blit=False)
 
     # Save to file (MP4)
+    ffmpeg_bin = shutil.which("ffmpeg")
+
+    if ffmpeg_bin:
+        plt.rcParams['animation.ffmpeg_path'] = ffmpeg_bin
+    else:
+        plt.rcParams['animation.ffmpeg_path'] = r"C:\ffmpeg\bin\ffmpeg.exe"
 
     writer = FFMpegWriter(fps=fps, bitrate=2000)
     fname = os.path.join(
@@ -168,9 +176,9 @@ def make_video(
 
 def main():  # command-line interface
 
-    p = argparse.ArgumentParser(description="Create a video from snapshots.npz")
+    p = argparse.ArgumentParser(description="Create a video from reference_solution.npz")
     p.add_argument("--output-animations-dir", default="output_animations")
-    p.add_argument("--npz-path", nargs="?", default="output_solution/snapshots.npz")
+    p.add_argument("--npz-path", nargs="?", default="output_solution/reference_solution.npz")
     p.add_argument("--out", default="gray_scott.mp4")
     p.add_argument("--fps", type=int, default=15)
     p.add_argument("--dpi", type=int, default=200)

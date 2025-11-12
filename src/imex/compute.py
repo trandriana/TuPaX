@@ -136,7 +136,7 @@ def run_simulation(
         plt.axis('equal')
         plt.axis('off')
         plt.colorbar(label='Concentration u', fraction=0.03, pad=0.04)
-        plt.title('Species u at t = %7.2f' % t[step_idx])
+        plt.title(f'Species u - {t[step_idx]:7.2f} tu')
 
         plt.subplot(1, 2, 2)
         # plt.imshow(v_var.value.reshape((nx, nx)), vmin=0.0, vmax=1.0, cmap='turbo', origin='lower')
@@ -146,7 +146,7 @@ def run_simulation(
         plt.axis('equal')
         plt.axis('off')
         plt.colorbar(label='Concentration v', fraction=0.03, pad=0.04)
-        plt.title('Species v at t = %7.2f' % t[step_idx])
+        plt.title(f'Species v - {t[step_idx]:7.2f} tu')
 
         # plt.tight_layout()  # avoids overlapping titles/colorbars
         fname = os.path.join(
