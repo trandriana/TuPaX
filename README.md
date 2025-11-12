@@ -2,47 +2,65 @@
            alt="TuPaX logo" width="256" height="256">     
 [![DOI](https://zenodo.org/badge/1074261727.svg)](https://doi.org/10.5281/zenodo.17328875)
 [![arXiv](https://img.shields.io/badge/arXiv-2508.18910-b31b1b.svg)](https://doi.org/10.48550/arXiv.2508.18910)
+[![arXiv](https://img.shields.io/badge/arXiv-2510.03972-b31b1b.svg)](https://doi.org/10.48550/arXiv.2510.03972)
 [![Powered by FiPy](https://img.shields.io/badge/Powered%20by-FiPy-1f425f.svg)](https://github.com/usnistgov/fipy)
 
 # Turing Pattern eXperiments
 
-This code implements a semi-implicit (IMEX) finite-volume scheme for the Gray–Scott reaction–diffusion model using FiPy.
+This code implements a **discrete data assimilation algorithm** for the Gray--Scott reaction-diffusion model, using a semi-implicit (IMEX) finite-volume scheme built with FiPy. The continuous form of the data assimilation algorithm reads
 
-We solve the coupled reaction-diffusion equations
+$$
+\partial_t \tilde{u} = d_u \Delta \tilde{u} - \tilde{u} \tilde{v}^2 + F(1-\tilde{u}) + \mu_u (\mathcal{I}_H\tilde{u} - \mathcal{I}_H u ), \qquad
+\partial_t \tilde{v} = d_v \Delta \tilde{v} + \tilde{u} \tilde{v}^2 - (F+k)\tilde{v} + \mu_v (\mathcal{I}_H\tilde{v} - \mathcal{I}_H v ),
+$$
 
-$$\partial_t u = d_u \Delta u - u v^2 + F (1 - u),$$ $$\partial_t v = d_v \Delta v + u v^2 - (F + k) v,$$
-
-with Neumann boundary conditions (by the default on FiPy), where:
-
+with Neumann boundary conditions and a finite volume interpolant $\mathcal{I}_H$ that characterizes the coarse observation we have on the Truth $(u,v)$.
+<div align="center">
+           
 | Symbol | Meaning |
-|:-------:|:--------|
-| $u, v$ | species concentrations |
+|:------:|:--------|
+| $u, v$ | species concentrations (Truth) |
+| $\tilde{u}, \tilde{v}$ | reconstructed concentrations  |
 | $d_u, d_v$ | diffusion coefficients |
 | $F, k$ | feed and kill rates |
+| $H$ | observation resolution |
+| $(\mu_u, \mu_v)$ | nudging gain |
+
+</div >
+
+The framework supports a **multigrid (multiresolution) approach**, where the observations are defined on a **coarse grid** (low resolution) and the model state is reconstructed on a **fine grid** (high resolution). This enables the recovery of fine-scale Gray--Scott patterns from sparse or low-resolution observations.
+
+The underlying IMEX solver can also be used on its own to simulate the Gray--Scott system by setting $\mu_u = \mu_v = 0$.
+
+The data assimilation module updates the model state at discrete, possibly sparse, times using coarse or noisy observations, while the IMEX solver advances the forecast between updates. It can therefore both **generate synthetic data** and **reconstruct the full state** from partial measurements.
+
+
 
 
 ---
 
 ## Project structure
 ```
-gray_scott_IMEX/
-├── src/gray_scott/
-│   ├── __init__.py
-│   ├── compute.py        # CLI: gray-scott-compute (run simulation)
-│   └── animate.py        # CLI: gray-scott-animate (build MP4 from NPZ)
-│
-├── examples/
+TuPaX/
+├── tests
+│   └── test_import.py
+├── src
+│   ├── tupax
+│   │   ├── animate.py
+│   └── imex
+│       ├── reconstruct.py
+│       ├── compute.py
+├── pyproject.toml
+├── output_solution
+├── output_images
+├── output_animations
+├── examples
 │   ├── run_default.sh
 │   └── make_video.sh
-│
-├── output_images/        # PNG frames (created at runtime)
-├── output_solution/      # NPZ/MAT snapshots, MP4 (created at runtime)
-│
 ├── README.md
+├── MANIFEST.in
 ├── LICENSE
-├── pyproject.toml
-├── CITATION.cff
-└── .gitignore
+└── CITATION.cff
 ```
 
 
@@ -104,3 +122,5 @@ gray-scott-animate output_solution/snapshots.npz \
   --out output_solution/gray_scott.mp4 --fps 15 \
   --which both --use-fixed-limits --vmin 0.0 --vmax 1.0
 ```
+### Reconstruction of the Gray--Scott dynamics
+<img width="400" height="300" alt="image" src="https://github.com/user-attachments/assets/b53e5e51-d948-4bc4-9501-4af511a1b1d5" />
