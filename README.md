@@ -74,9 +74,9 @@ The data assimilation module updates the model state at discrete, possibly spars
 ## Installation
 
 ```bash
-conda create -n env-tupax
-conda activate env-tupax
-conda install -c conda-forge fipy matplotlib scipy ffmpeg
+conda create -n grayscott python=3.11 -y
+conda activate grayscott
+conda install -c conda-forge fipy matplotlib scipy ffmpeg -y
 pip install -e .
 ```
 
