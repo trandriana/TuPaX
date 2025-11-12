@@ -1,7 +1,7 @@
 ---
 cff-version: 1.2.0
 message: 'If you use this software, please cite it as described below.'
-title: 'Gray--Scott IMEX-FiPy'
+title: 'A discrete data assimilation algorithm for the reconstruction of Gray--Scott dynamics'
 type: software
 authors:
   - family-names: Randrianasolo
@@ -14,12 +14,11 @@ repository-code: 'https://github.com/trandriana/TuPaX'
 references:
   - type: article
     title: >-
-      Convergence and error analysis of a semi-implicit finite volume scheme
-      for the Gray--Scott system
+      A discrete data assimilation algorithm for the reconstruction of Gray--Scott dynamics
     authors:
       - family-names: Randrianasolo
         given-names: Tsiry Avisoa
     year: 2025
-    url: 'https://arxiv.org/abs/2508.18910'
-    doi: '10.48550/arXiv.2508.18910'
+    url: 'https://doi.org/10.48550/arXiv.2510.03972'
+    doi: '10.48550/arXiv.2510.03972'
     notes: 'Preprint'
