@@ -1,3 +1,7 @@
+'''
+Gray-Scott animation from *.npz.
+Author: Tsiry Avisoa Randrianasolo
+'''
 # ---------------------
 # Standard library imports
 # ---------------------
@@ -113,7 +117,7 @@ def make_video(
         field = u if which == "u" else v
         fig, ax = plt.subplots(1, 1, figsize=(7, 5), constrained_layout=True)
         ims = [ax.imshow(field[0], origin="lower", cmap=cmap, vmin=vmin, vmax=vmax)]
-        ax.set_title(f"{which} at t = {t[0]:.2f}")
+        ax.set_title(f"{which} ({t[0]:.2f} tu)")
         ax.axis("off")
         axes = [ax]
 
@@ -128,13 +132,13 @@ def make_video(
             ims[1].set_data(v[i])
             ims[0].set_clim(vmin, vmax)
             ims[1].set_clim(vmin, vmax)
-            axes[0].set_title(f"Species u at t = {t[i]:.2f}")
-            axes[1].set_title(f"Species v at t = {t[i]:.2f}")
+            axes[0].set_title(f"Species u ({t[i]:.2f} tu)")
+            axes[1].set_title(f"Species v ({t[i]:.2f} tu)")
             return ims
         else:
             ims[0].set_data((u if which == "u" else v)[i])
             ims[0].set_clim(vmin, vmax)
-            axes[0].set_title(f"Species {which} at t = {t[i]:.2f}")
+            axes[0].set_title(f"Species {which} ({t[i]:.2f} tu)")
             return ims
 
     # Create animation object
@@ -147,6 +151,16 @@ def make_video(
         output_animations_dir,
         out_path if out_path.endswith(".mp4") else "gray_scott.mp4",
     )
+    # Check for name conflicts and add _00, _01, ... if needed
+    if os.path.exists(fname):
+        root, ext = os.path.splitext(fname)
+        i = 0
+        while True:
+            candidate = f"{root}_{i:02d}{ext}"
+            if not os.path.exists(candidate):
+                fname = candidate
+                break
+            i += 1
     anim.save(fname, writer=writer, dpi=dpi)
 
     print("\nDone.")
@@ -156,7 +170,7 @@ def main():  # command-line interface
 
     p = argparse.ArgumentParser(description="Create a video from snapshots.npz")
     p.add_argument("--output-animations-dir", default="output_animations")
-    p.add_argument("npz_path", nargs="?", default="output_solution/snapshots.npz")
+    p.add_argument("--npz-path", nargs="?", default="output_solution/snapshots.npz")
     p.add_argument("--out", default="gray_scott.mp4")
     p.add_argument("--fps", type=int, default=15)
     p.add_argument("--dpi", type=int, default=200)
@@ -180,6 +194,7 @@ def main():  # command-line interface
         which=args.which,
     )
 
+    
 
 # ---------------------
 # Entry point for script

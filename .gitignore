@@ -10,6 +10,9 @@ __pycache__/
 
 # Outputs
 output_images/
+*.mp4
+*.avi
+*.gif
 output_solution/
 *.png
 *.npz

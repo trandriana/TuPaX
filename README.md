@@ -65,21 +65,22 @@ gray-scott-compute [OPTIONS]
 ```
 | Option                       | Meaning                       | Default           |
 | ---------------------------- | ----------------------------- | ----------------- |
-| `--nx INT`                   | Grid resolution per side      | `256`             |
+| `--nx INT`                   | Grid resolution per side      | `240`             |
 | `--L FLOAT`                  | Domain size                   | `1.0`             |
 | `--du FLOAT`                 | Diffusion coefficient for *u* | `1.6e-5`          |
 | `--dv FLOAT`                 | Diffusion coefficient for *v* | `0.8e-5`          |
 | `--F FLOAT`                  | Feed rate                     | `0.025`           |
 | `--k FLOAT`                  | Kill rate                     | `0.06`            |
-| `--T FLOAT`                  | Final time                    | `2000.0`          |
-| `--steps INT`                | Number of time steps          | `16000`           |
+| `--T FLOAT`                  | Final time                    | `4000.0`          |
+| `--steps INT`                | Number of time steps          | `8000`            |
+| `--n-solution-snapshots`     | Number of snapshots           | `8000`            |
 | `--n-image-snapshots INT`    | How many PNGs to save         | `5`               |
 | `--output-images-dir PATH`   | Directory for PNGs            | `output_images`   |
-| `--output-solution-dir PATH` | Directory for NPZ/MAT         | `output_solution` |
+| `--output-solution-dir PATH` | Directory for NPZ             | `output_solution` |
 
 Example
 ```
-gray-scott-compute --nx 128 --T 2000 --steps 4000 --n-image-snapshots 5
+gray-scott-compute --nx 128 --T 2000 --steps 4000 --n-solution-snapshots 80
 ```
 
 ### Make a video from NPZ snapshots
@@ -95,7 +96,7 @@ gray-scott-animate <path/to/snapshots.npz> [OPTIONS]
 | `--cmap NAME`        | Matplotlib colormap                     | `turbo`                          |
 | `--fps INT`          | Frames per second                       | `15`                             |
 | `--dpi INT`          | Render DPI                              | `200`                            |
-| `--out PATH`         | Output file (`.mp4`)          | `output_solution/gray_scott.mp4` |
+| `--out PATH`         | Output file (`.mp4`)                    | `output_solution/gray_scott.mp4` |
 
 Example:
 ```

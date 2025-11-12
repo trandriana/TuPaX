@@ -1,8 +1,12 @@
+'''
+Gray-Scott FiPy simulation with a semi-implicit (IMEX) scheme.
+Author: Tsiry Avisoa Randrianasolo
+'''
+
 # ---------------------
 # Standard library imports
 # ---------------------
 import os
-
 import scipy.io
 
 # ---------------------
@@ -10,14 +14,14 @@ import scipy.io
 # ---------------------
 import matplotlib
 
-matplotlib.use("Agg")  # Use a non-interactive backend
+matplotlib.use('Agg')  # Use a non-interactive backend
 import matplotlib.pyplot as plt
 
 # ---------------------
 # FiPy imports
 # ---------------------
-from fipy import CellVariable, Grid2D, TransientTerm, DiffusionTerm  # type: ignore
-from fipy.solvers.scipy import LinearPCGSolver  # type: ignore # PCG = Preconditioned Conjugate Gradient
+from fipy import CellVariable, Grid2D, TransientTerm, DiffusionTerm 
+from fipy.solvers.scipy import LinearPCGSolver  # PCG = Preconditioned Conjugate Gradient
 
 # ---------------------
 # Other imports
@@ -26,24 +30,24 @@ import numpy as np
 import argparse
 
 
-# ---------------------
+# ===============================================================
 # Main simulation function
-# ---------------------
+# ===============================================================
 def run_simulation(
-    output_images_dir: str = "output_images",
-    output_solution_dir: str = "output_solution",
+    output_images_dir: str = 'output_images',
+    output_solution_dir: str = 'output_solution',
     L: float = 1.0,
-    nx: int = 128,
+    nx: int = 240,
     du: float = 1.6e-5,
     dv: float = 0.8e-5,
-    F: float = 0.025,
+    F: float = 0.037,
     k: float = 0.060,
-    T: float = 2000.0,
-    steps: int = 4000,
-    n_solution_snapshots: int = 21,
+    T: float = 4000.0,
+    steps: int = 8000,
+    n_solution_snapshots: int = 8000,
     n_image_snapshots: int = 5,
 ):
-    """
+    '''
     Run the Gray-Scott simulation with IMEX scheme.
 
     1. Set up the domain and mesh.
@@ -67,7 +71,7 @@ def run_simulation(
     - n_solution_snapshots: Number of solution snapshots to save.
     - n_image_snapshots: Number of image snapshots to save.
 
-    """
+    '''
 
     # ---------------------
     # Domain and mesh
@@ -86,8 +90,8 @@ def run_simulation(
     # ---------------------
     # Variables
     # ---------------------
-    u = CellVariable(name="u", mesh=mesh)
-    v = CellVariable(name="v", mesh=mesh)
+    u = CellVariable(name='u', mesh=mesh)
+    v = CellVariable(name='v', mesh=mesh)
     u_old = CellVariable(mesh=mesh)
     v_old = CellVariable(mesh=mesh)
 
@@ -127,45 +131,46 @@ def run_simulation(
         plt.subplot(1, 2, 1)
         # plt.imshow(u_var.value.reshape((nx, nx)), vmin=0.0, vmax=1.0, cmap='turbo', origin='lower')
         plt.pcolormesh(
-            u_var.value.reshape((nx, nx)), cmap="jet", vmin=0, vmax=1, shading="auto"
+            u_var.value.reshape((nx, nx)), cmap='jet', vmin=0, vmax=1, shading='auto'
         )
-        plt.axis("equal")
-        plt.axis("off")
-        plt.colorbar(label="Concentration u", fraction=0.03, pad=0.04)
-        plt.title("Species u at t = %7.2f" % t[step_idx])
+        plt.axis('equal')
+        plt.axis('off')
+        plt.colorbar(label='Concentration u', fraction=0.03, pad=0.04)
+        plt.title('Species u at t = %7.2f' % t[step_idx])
 
         plt.subplot(1, 2, 2)
         # plt.imshow(v_var.value.reshape((nx, nx)), vmin=0.0, vmax=1.0, cmap='turbo', origin='lower')
         plt.pcolormesh(
-            v_var.value.reshape((nx, nx)), cmap="jet", vmin=0, vmax=1, shading="auto"
+            v_var.value.reshape((nx, nx)), cmap='jet', vmin=0, vmax=1, shading='auto'
         )
-        plt.axis("equal")
-        plt.axis("off")
-        plt.colorbar(label="Concentration v", fraction=0.03, pad=0.04)
-        plt.title("Species v at t = %7.2f" % t[step_idx])
+        plt.axis('equal')
+        plt.axis('off')
+        plt.colorbar(label='Concentration v', fraction=0.03, pad=0.04)
+        plt.title('Species v at t = %7.2f' % t[step_idx])
 
         # plt.tight_layout()  # avoids overlapping titles/colorbars
         fname = os.path.join(
-            output_images_dir, f"GS_concentration_{int(t[step_idx]):05d}.png"
+            output_images_dir, f'GS_concentration_{int(t[step_idx]):05d}.png'
         )
-        plt.savefig(fname, dpi=300, bbox_inches="tight", transparent=False)
+        plt.savefig(fname, dpi=300, bbox_inches='tight', transparent=False)
         plt.close()  # Close the figure to free memory
 
     # ---------------------
     # Time sampling for saving
     # ---------------------
-    times_solution = np.linspace(t0, T, n_solution_snapshots)
-    times_images = np.linspace(t0, T, n_image_snapshots)
+    
+    times_solution = np.linspace(t0, T, n_solution_snapshots+1)
+    times_images = np.linspace(t0, T, n_image_snapshots+1)
 
     # initial save
     save_images(u, v, 0)
-    snap_u = [u.value.copy().reshape((nx, nx), order="F")]
-    snap_v = [v.value.copy().reshape((nx, nx), order="F")]
+    snap_u = [u.value.copy().reshape((nx, nx), order='F')]
+    snap_v = [v.value.copy().reshape((nx, nx), order='F')]
 
     # solver
-    solver = LinearPCGSolver(tolerance=1e-10, iterations=1000)
+    solver = LinearPCGSolver(tolerance=3e-16, iterations=1000)
 
-    print("Running...")
+    print('Running...')
 
     for step in range(1, steps + 1):
 
@@ -180,11 +185,12 @@ def run_simulation(
 
         if t[step] in times_solution:
 
-            snap_u.append(u.value.copy().reshape((nx, nx), order="F"))
-            snap_v.append(v.value.copy().reshape((nx, nx), order="F"))
+            snap_u.append(u.value.copy().reshape((nx, nx), order='F'))
+            snap_v.append(v.value.copy().reshape((nx, nx), order='F'))
 
-            print(f"Step {step:5d}/{steps}, t = {t[step]:07.2f}")
+            print(f'Step {step:5d}/{steps}, t = {t[step]:07.2f}')
 
+    print('Saving...')
     # ---------------------
     # Save snapshots + metadata
     # ---------------------
@@ -203,7 +209,7 @@ def run_simulation(
 
     # Save to NPZ for Python
     np.savez_compressed(
-        os.path.join(output_solution_dir, "snapshots.npz"),
+        os.path.join(output_solution_dir, 'reference_solution.npz'),
         t=np.array(times_solution),
         u=np.array(snap_u),
         v=np.array(snap_v),
@@ -211,39 +217,39 @@ def run_simulation(
     )
 
     # Save to MAT for MATLAB
-    scipy.io.savemat(
-        os.path.join(output_solution_dir, "snapshots.mat"),
-        {
-            "t": np.array(times_solution),
-            "u": np.array(snap_u),
-            "v": np.array(snap_v),
-            **metadata,  # adds same metadata in MATLAB file
-        },
-        do_compression=True,
-    )
+    # scipy.io.savemat(
+    #     os.path.join(output_solution_dir, 'snapshots.mat'),
+    #     {
+    #         't': np.array(times_solution),
+    #         'u': np.array(snap_u),
+    #         'v': np.array(snap_v),
+    #         **metadata,  # adds same metadata in MATLAB file
+    #     },
+    #     do_compression=True,
+    # )
 
-    print("Done.")
+    print('Done.')
 
 
-# ---------------------
+# ===============================================================
 # Command-line interface
-# ---------------------
+# ===============================================================
 def main():
     p = argparse.ArgumentParser(
-        description="Gray-Scott FiPy simulation with IMEX scheme"
+        description='Gray-Scott FiPy simulation with IMEX scheme'
     )
-    p.add_argument("--output-images-dir", default="output_images")
-    p.add_argument("--output-solution-dir", default="output_solution")
-    p.add_argument("--L", type=float, default=1.0)
-    p.add_argument("--nx", type=int, default=256)
-    p.add_argument("--du", type=float, default=1.6e-5)
-    p.add_argument("--dv", type=float, default=0.8e-5)
-    p.add_argument("--F", type=float, default=0.025)
-    p.add_argument("--k", type=float, default=0.060)
-    p.add_argument("--T", type=float, default=2000.0)
-    p.add_argument("--steps", type=int, default=4000)
-    p.add_argument("--n-solution-snapshots", type=int, default=201)
-    p.add_argument("--n-image-snapshots", type=int, default=6)
+    p.add_argument('--output-images-dir', default='output_images')
+    p.add_argument('--output-solution-dir', default='output_solution')
+    p.add_argument('--L', type=float, default=1.0)
+    p.add_argument('--nx', type=int, default=240)
+    p.add_argument('--du', type=float, default=1.6e-5)
+    p.add_argument('--dv', type=float, default=0.8e-5)
+    p.add_argument('--F', type=float, default=0.037)
+    p.add_argument('--k', type=float, default=0.060)
+    p.add_argument('--T', type=float, default=4000.0)
+    p.add_argument('--steps', type=int, default=8000)
+    p.add_argument('--n-solution-snapshots', type=int, default=8000)
+    p.add_argument('--n-image-snapshots', type=int, default=6)
     args = p.parse_args()
 
     run_simulation(
@@ -262,9 +268,9 @@ def main():
     )
 
 
-# ---------------------
+# ===============================================================
 # Entry point
-# ---------------------
-if __name__ == "__main__":
+# ===============================================================
+if __name__ == '__main__':
 
     main()

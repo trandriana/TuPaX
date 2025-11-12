@@ -3,12 +3,16 @@ requires = ['hatchling>=1.25']
 build-backend = 'hatchling.build'
 
 [project]
-name = 'gray-scott-fipy'
-version = '0.1.0'
-description = """
-This code implements a semi-implicit (IMEX)
-finite volume scheme for the Gray--Scott model.
+name = 'tupax'
+version = '2.0.0'
+description ="""
+Implements a discrete data assimilation algorithm for the Gray-Scott model,
+built on a semi-implicit (IMEX) finite volume scheme.
+
+The same IMEX solver can also compute direct numerical solutions of
+the Gray-Scott system, which are used to generate synthetic data.
 """
+
 
 readme = 'README.md'
 requires-python = '>=3.11'
@@ -18,6 +22,7 @@ authors = [
 ]
 keywords = [
   'IMEX schemes',
+  'data assimilation',
   'finite volume methods',
   'reaction-diffusion equations',
   'Gray-Scott model',
@@ -35,19 +40,21 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = 'https://github.com/trandriana/gray_scott'
-Issues   = 'https://github.com/trandriana/gray_scott/issues'
+Homepage = 'https://github.com/trandriana/TuPaX'
+Issues   = 'https://github.com/trandriana/TuPaX/issues'
 
 [project.scripts]
-gray-scott-compute  = 'gray_scott.compute:main'
-gray-scott-animate  = 'gray_scott.animate:main'
+imex-compute  = 'imex.compute:main'
+imex-reconstruct  = 'imex.reconstruct:main'
+tupax-animate  = 'tupax.animate:main'
 
 [tool.hatch.build.targets.wheel]
-packages = ['src/gray_scott']
+packages = ['src/imex', 'src/tupax']
 
 [tool.hatch.build.targets.sdist]
 include = [
-  'src/gray_scott',
+  'src/imex',
+  'src/tupax',
   'README.md',
   'LICENSE',
   'CITATION.cff',
