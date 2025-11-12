@@ -15,6 +15,7 @@ $$
 $$
 
 with Neumann boundary conditions and a finite volume interpolant $\mathcal{I}_H$ that characterizes the coarse observation we have on the Truth $(u,v)$.
+
 <div align="center">
            
 | Symbol | Meaning |
@@ -75,60 +76,111 @@ pip install -e .
 
 ## Quick start
 
-### Generate synthetic data:
+### Generate synthetic data with `imex-compute`:
 ```bash
 imex-compute [OPTIONS]
 ```
+  
+           
 | Option                       | Meaning                       | Default           |
 | ---------------------------- | ----------------------------- | ----------------- |
 | `--nx INT`                   | Grid resolution per side      | `240`             |
 | `--L FLOAT`                  | Domain size                   | `1.0`             |
 | `--du FLOAT`                 | Diffusion coefficient for *u* | `1.6e-5`          |
 | `--dv FLOAT`                 | Diffusion coefficient for *v* | `0.8e-5`          |
-| `--F FLOAT`                  | Feed rate                     | `0.025`           |
-| `--k FLOAT`                  | Kill rate                     | `0.06`            |
+| `--F FLOAT`                  | Feed rate                     | `0.037`           |
+| `--k FLOAT`                  | Kill rate                     | `0.060`            |
 | `--T FLOAT`                  | Final time                    | `4000.0`          |
 | `--steps INT`                | Number of time steps          | `8000`            |
 | `--n-solution-snapshots`     | Number of snapshots           | `8000`            |
-| `--n-image-snapshots INT`    | How many PNGs to save         | `5`               |
+| `--n-image-snapshots INT`    | How many PNGs to save         | `4`               |
 | `--output-images-dir PATH`   | Directory for PNGs            | `output_images`   |
 | `--output-solution-dir PATH` | Directory for NPZ             | `output_solution` |
 
+
+
+
 **Example:**
+We generate synthetic data, referred to as the truth, by simulating the system using the default imex-compute parameters.
+
 ```
 imex-compute
 ```
+This process generates visual outputs for quick verification and saves the numerical results as `reference_solution.npz` in the folder `output_solution/`.
 
-### Make a video from NPZ snapshots
-```
-gray-scott-animate <path/to/snapshots.npz> [OPTIONS]
-```
-| Option               | Meaning                                 | Default                          |
-| -------------------- | --------------------------------------- | -------------------------------- |
-| `--which {both,u,v}` | Animate both fields or only one         | `both`                           |
-| `--use-fixed-limits` | Keep constant color scale across frames | off                              |
-| `--vmin FLOAT`       | Color min                               | `0.0`                            |
-| `--vmax FLOAT`       | Color max                               | `1.0`                            |
-| `--cmap NAME`        | Matplotlib colormap                     | `turbo`                          |
-| `--fps INT`          | Frames per second                       | `15`                             |
-| `--dpi INT`          | Render DPI                              | `200`                            |
-| `--out PATH`         | Output file (`.mp4`)                    | `output_solution/gray_scott.mp4` |
 
-Example:
-```
-gray-scott-animate output_solution/snapshots.npz \
-  --out output_solution/gray_scott.mp4 --fps 15 \
-  --which both --use-fixed-limits --vmin 0.0 --vmax 1.0
+### Reconstruction of the Gray--Scott system with `imex–reconstruct`:
+```bash
+imex-reconstruct [OPTIONS]
 ```
 
+ 
+           
+| Option                       | Meaning                                                        | Default                                  |
+| ---------------------------- | -------------------------------------------------------------- | ---------------------------------------- |
+| `--npz-path PATH`            | Path to the NPZ file containing the reference (truth) solution | `output_solution/reference_solution.npz` |
+| `--output-solution-dir PATH` | Directory to save reconstructed solutions                      | `output_solution`                        |
+| `--output-images-dir PATH`   | Directory to save reconstruction images and error plots        | `output_images`                          |
+| `--obs-nx INT`               | Number of coarse grid points for observations                  | `24`                                     |
+| `--mu-u FLOAT`               | Nudging coefficient for species *u*                            | `0.0`                                    |
+| `--mu-v FLOAT`               | Nudging coefficient for species *v*                            | `1.0`                                    |
+| `--n-solution-snapshots INT` | Number of solution snapshots to save                           | `80`                                     |
+| `--n-image-snapshots INT`    | Number of images to save during the reconstruction             | `5`                                      |
+| `--reconstruct-time FLOAT`   | Time (in tu) to start the reconstruction                       | `0.0`                                    |
+| `--reconstruct-freq INT`     | Frequency (in steps) of reconstruction updates                 | `0`                                      |     
+         
+
+
+**Example:**
+We reconstruct the Gray--Scott system using the default parameters:
+```
+imex-reconstruct
+```
+This process loads `output_solution/reference_solution.npz` (the synthetic truth generated by `imex-compute`),
+runs the reconstruction with default nudging coefficients, and saves the numerical results as `observed_solution.npz` and `reconstructed_solution.npz` in the folder `output_solution/`.
+
+**Coarse observation:**
+
+![gray_scott_04](https://github.com/user-attachments/assets/5f3626b0-0187-4b5f-bfe2-cdd72aa51114)
+
+
+**Fine scale reconstructed solution:**
+
+![gray_scott_03](https://github.com/user-attachments/assets/ae3a04aa-ad2e-43b5-adcf-bcbcb2ab4b71)
 
 
 
-### Reconstruction of the Gray--Scott dynamics
+The above command produces also error plots between the reconstructed solution and the reference solution:
 
-<img width="300" height="300" alt="image" src="https://github.com/user-attachments/assets/b53e5e51-d948-4bc4-9501-4af511a1b1d5"  />
-<img width="300" height="300" alt="image" src="https://github.com/user-attachments/assets/a45224b9-8a9d-43f6-a9a1-fbb9af2930b5" />
-<img width="300" height="300" alt="image" src="https://github.com/user-attachments/assets/c580caf9-e038-4389-811a-e2434c7d0877" />
+<img width="300" height="300" alt="image" src="https://github.com/user-attachments/assets/b53e5e51-d948-4bc4-9501-4af511a1b1d5" >
+ 
+
+### Create an animation of the Gray–Scott system with `imex-animate`
+```
+imex-animate [OPTIONS]
+```
+| Option                         | Meaning                                                       | Default                                  |
+| :----------------------------- | :------------------------------------------------------------ | :--------------------------------------- |
+| `--output-animations-dir PATH` | Directory to save the generated video                         | `output_animations`                      |
+| `--npz-path PATH`              | Path to the `.npz` file containing the simulated data         | `output_solution/reference_solution.npz` |
+| `--out PATH`                   | Output filename (MP4 or GIF)                                  | `gray_scott.mp4`                         |
+| `--fps INT`                    | Frames per second of the video                                | `15`                                     |
+| `--dpi INT`                    | Resolution of the output video (dots per inch)                | `200`                                    |
+| `--cmap STR`                   | Colormap to use (any valid Matplotlib colormap)               | `jet`                                    |
+| `--use-fixed-limits`           | Use fixed color scale limits (`--vmin`, `--vmax`)             | *(disabled by default)*                  |
+| `--vmin FLOAT`                 | Fixed minimum color scale value                               | `0.0`                                    |
+| `--vmax FLOAT`                 | Fixed maximum color scale value                               | `1.0`                                    |
+| `--which {both,u,v}`           | Choose whether to animate both fields (*u*, *v*), or only one | `both`                                   |
+
+**Example**. To generate an animation of both species from the default reconstructed solution:
+```
+imex-animate --npz-path output_solution/reconstructed_solution.npz
+```
+or observed solution:
+```
+imex-animate --npz-path output_solution/reconstructed_solution.npz
+```
+This process produces an MP4 animation named `gray_scott.mp4` or `gray_scott_01.mp4`  in the folder `output_animations/`.
 
 
 
