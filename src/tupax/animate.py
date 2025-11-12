@@ -17,7 +17,7 @@ import matplotlib
 
 matplotlib.use("Agg")  # Use a non-interactive backend
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation, FFMpegWriter
+from matplotlib.animation import FuncAnimation, FFMpegWriter, PillowWriter
 
 # ---------------------
 # Other imports
@@ -134,13 +134,13 @@ def make_video(
             ims[1].set_data(v[i])
             ims[0].set_clim(vmin, vmax)
             ims[1].set_clim(vmin, vmax)
-            axes[0].set_title(f"Species u ({t[i]:.2f} tu)")
-            axes[1].set_title(f"Species v ({t[i]:.2f} tu)")
+            axes[0].set_title(f"Species u - {t[i]:.2f} tu")
+            axes[1].set_title(f"Species v - {t[i]:.2f} tu")
             return ims
         else:
             ims[0].set_data((u if which == "u" else v)[i])
             ims[0].set_clim(vmin, vmax)
-            axes[0].set_title(f"Species {which} ({t[i]:.2f} tu)")
+            axes[0].set_title(f"Species {which} - {t[i]:.2f} tu")
             return ims
 
     # Create animation object
@@ -155,6 +155,7 @@ def make_video(
         plt.rcParams['animation.ffmpeg_path'] = r"C:\ffmpeg\bin\ffmpeg.exe"
 
     writer = FFMpegWriter(fps=fps, bitrate=2000)
+    # writer = PillowWriter(fps=fps)
     fname = os.path.join(
         output_animations_dir,
         out_path if out_path.endswith(".mp4") else "gray_scott.mp4",

@@ -174,19 +174,6 @@ def run_simulation(
     # ---------------- Local reaction terms ----------------
     def Rtu(tu, tv, Ih_u, Ih_tu, mu): return -tu*tv**2 + F*(1.0 - tu) + mu*(Ih_u - Ih_tu)
     def Rtv(tu, tv, Ih_v, Ih_tv, mu): return  tu*tv**2 - (F + k)*tv + mu*(Ih_v - Ih_tv)
-
-    # ---------------- Initialize arrays ----------------
-    # A small tolerance solver is required otherwise the round-off errors destabilize the synchronization
-    solver = LinearPCGSolver(tolerance=3e-16, iterations=1000)
-    snap_tu, snap_tv, snap_Ih_u, snap_Ih_v = [], [], [], []
-
-    error_u, error_v = [], []
-    u, v = u_ref[0,:,:].flatten(order='F'), v_ref[0,:,:].flatten(order='F')
-    e0u = np.linalg.norm(tu.value - u)
-    e0v = np.linalg.norm(tv.value - v)
-    error_u.append(e0u)
-    error_v.append(e0v)
-
     # ---------------------
     # Function to save images
     # ---------------------
@@ -219,6 +206,18 @@ def run_simulation(
         plt.savefig(fname, dpi=300, bbox_inches='tight', transparent=False)
         plt.close()  # Close the figure to free memory
 
+    # ---------------- Initialize arrays ----------------
+    # A small tolerance solver is required otherwise the round-off errors destabilize the synchronization
+    solver = LinearPCGSolver(tolerance=3e-16, iterations=1000)
+    snap_tu, snap_tv, snap_Ih_u, snap_Ih_v = [], [], [], []
+
+    error_u, error_v = [], []
+    u, v = u_ref[0,:,:].flatten(order='F'), v_ref[0,:,:].flatten(order='F')
+    e0u = np.linalg.norm(tu.value - u)
+    e0v = np.linalg.norm(tv.value - v)
+    error_u.append(e0u)
+    error_v.append(e0v)
+
     # ---------------------
     # Time sampling for saving
     # ---------------------
@@ -226,27 +225,28 @@ def run_simulation(
     times_images = np.linspace(t_ref[0], t_ref[-1], n_image_snapshots+1)
     activate_u = 0.0
     activate_v = 0.0
+    
+    # initial 
+    # Restrict and prolong
+    Ih_u = P @ (R @ u)
+    Ih_v = P @ (R @ v)
+    Ih_tu = P @ (R @ tu.value)
+    Ih_tv = P @ (R @ tv.value)
+
     t_rec = [t_ref[0]]
+    snap_tu.append(tu.value.reshape((nx, nx), order='F'))
+    snap_tv.append(tv.value.reshape((nx, nx), order='F'))
+    snap_Ih_u.append(Ih_u.reshape((nx, nx), order='F'))
+    snap_Ih_v.append(Ih_v.reshape((nx, nx), order='F'))
     # ---------------- Time loop ----------------
     print(f'Running reconstruction ({steps} steps)...')
     for step in range(1, steps+1):
-        tu.updateOld()
-        tv.updateOld()
-        tu_old = tu.value.copy()
-        tv_old = tv.value.copy()
-
-        # Restrict and prolong
-        Ih_u = P @ (R @ u)
-        Ih_v = P @ (R @ v)
-        Ih_tu = P @ (R @ tu_old)
-        Ih_tv = P @ (R @ tv_old)
-        
-        activate_v = float((t_ref[step] >= reconstruct_time) and (step % 1000 >= reconstruct_freq))
+        activate_v = float((t_ref[step] >= reconstruct_time) and (step % 2000 >= reconstruct_freq))
 
         # The reconstruction starts only at reconstruct_time (by default 0.0)
         # Source terms
-        Stu = CellVariable(mesh=tu.mesh, value=Rtu(tu_old, tv_old, Ih_u, Ih_tu, activate_u*mu_u))
-        Stv = CellVariable(mesh=tv.mesh, value=Rtv(tu_old, tv_old, Ih_v, Ih_tv, activate_v*mu_v))
+        Stu = CellVariable(mesh=tu.mesh, value=Rtu(tu.value, tv.value, Ih_u, Ih_tu, activate_u*mu_u))
+        Stv = CellVariable(mesh=tv.mesh, value=Rtv(tu.value, tv.value, Ih_v, Ih_tv, activate_v*mu_v))
 
         # IMEX step
         eq_tu = TransientTerm(var=tu) == DiffusionTerm(coeff=du, var=tu) + Stu
@@ -254,7 +254,17 @@ def run_simulation(
         eq_tu.solve(var=tu, dt=dt, solver=solver)
         eq_tv.solve(var=tv, dt=dt, solver=solver)
 
+        tu.updateOld()
+        tv.updateOld()
+
         u, v = u_ref[step,:,:].flatten(order='F'), v_ref[step,:,:].flatten(order='F')
+
+        # Restrict and prolong
+        Ih_u = P @ (R @ u)
+        Ih_v = P @ (R @ v)
+        Ih_tu = P @ (R @ tu.value)
+        Ih_tv = P @ (R @ tv.value)
+
         # Errors
         e_u = np.linalg.norm(u - tu.value) / e0u
         e_v = np.linalg.norm(v - tv.value) / e0v
@@ -357,7 +367,7 @@ def main():
     p.add_argument('--obs-nx', type=int, default=24)
     p.add_argument('--mu-u', type=float, default=0.0)
     p.add_argument('--mu-v', type=float, default=1.0)
-    p.add_argument('--n-solution-snapshots', type=int, default=81)
+    p.add_argument('--n-solution-snapshots', type=int, default=80)
     p.add_argument('--n-image-snapshots', type=int, default=5)
     p.add_argument('--reconstruct-time', type=float, default=0.0)
     p.add_argument('--reconstruct-freq', type=int, default=0)

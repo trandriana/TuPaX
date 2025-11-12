@@ -249,7 +249,7 @@ def main():
     p.add_argument('--T', type=float, default=4000.0)
     p.add_argument('--steps', type=int, default=8000)
     p.add_argument('--n-solution-snapshots', type=int, default=8000)
-    p.add_argument('--n-image-snapshots', type=int, default=6)
+    p.add_argument('--n-image-snapshots', type=int, default=4)
     args = p.parse_args()
 
     run_simulation(
