@@ -54,13 +54,10 @@ The data assimilation module updates the model state at discrete, possibly spars
 │   └── imex
 │       ├── reconstruct.py
 │       └── compute.py
-├── pyproject.toml
 ├── output_solution
-│   ├── reference_solution.npz
-│   ├── reconstructed_solution.npz
-│   └── observed_solution.npz
 ├── output_images
 ├── output_animations
+├── pyproject.toml
 ├── README.md
 ├── LICENSE
 └── CITATION.cff
