@@ -1,5 +1,9 @@
-<img src="https://github.com/user-attachments/assets/007e1a3c-e4e8-4b56-8442-7302773b8c9c"
-           alt="TuPaX logo" width="256" height="256">     
+<div align="center">
+           <img src="https://github.com/user-attachments/assets/007e1a3c-e4e8-4b56-8442-7302773b8c9c"
+           alt="TuPaX logo" width="256" height="256">   
+
+</div >
+
 [![DOI](https://zenodo.org/badge/1074261727.svg)](https://doi.org/10.5281/zenodo.17328875)
 [![arXiv](https://img.shields.io/badge/arXiv-2508.18910-b31b1b.svg)](https://doi.org/10.48550/arXiv.2508.18910)
 [![arXiv](https://img.shields.io/badge/arXiv-2510.03972-b31b1b.svg)](https://doi.org/10.48550/arXiv.2510.03972)
