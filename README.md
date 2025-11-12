@@ -66,20 +66,18 @@ TuPaX/
 
 ## Installation
 
-### Using conda (recommended)
-
 ```bash
-conda create -n grayscott python=3.11 -y
-conda activate grayscott
-conda install -c conda-forge fipy matplotlib scipy ffmpeg -y
+conda create -n env-tupax
+conda activate env-tupax
+conda install -c conda-forge fipy matplotlib scipy ffmpeg
 pip install -e .
 ```
 
 ## Quick start
 
-### Run a short simulation and save snapshots:
+### Generate synthetic data:
 ```bash
-gray-scott-compute [OPTIONS]
+imex-compute [OPTIONS]
 ```
 | Option                       | Meaning                       | Default           |
 | ---------------------------- | ----------------------------- | ----------------- |
@@ -96,9 +94,9 @@ gray-scott-compute [OPTIONS]
 | `--output-images-dir PATH`   | Directory for PNGs            | `output_images`   |
 | `--output-solution-dir PATH` | Directory for NPZ             | `output_solution` |
 
-Example
+**Example:**
 ```
-gray-scott-compute --nx 128 --T 2000 --steps 4000 --n-solution-snapshots 80
+imex-compute
 ```
 
 ### Make a video from NPZ snapshots
@@ -122,5 +120,18 @@ gray-scott-animate output_solution/snapshots.npz \
   --out output_solution/gray_scott.mp4 --fps 15 \
   --which both --use-fixed-limits --vmin 0.0 --vmax 1.0
 ```
+
+
+
+
 ### Reconstruction of the Gray--Scott dynamics
-<img width="400" height="300" alt="image" src="https://github.com/user-attachments/assets/b53e5e51-d948-4bc4-9501-4af511a1b1d5" />
+
+<img width="300" height="300" alt="image" src="https://github.com/user-attachments/assets/b53e5e51-d948-4bc4-9501-4af511a1b1d5"  />
+<img width="300" height="300" alt="image" src="https://github.com/user-attachments/assets/a45224b9-8a9d-43f6-a9a1-fbb9af2930b5" />
+<img width="300" height="300" alt="image" src="https://github.com/user-attachments/assets/c580caf9-e038-4389-811a-e2434c7d0877" />
+
+
+
+
+
+
