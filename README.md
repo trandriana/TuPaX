@@ -56,7 +56,8 @@ The data assimilation module updates the model state at discrete, possibly spars
 │       └── compute.py
 ├── output_solution
 ├── output_images
-├── output_animations
+├── output_animations 
+├── environment.yml
 ├── pyproject.toml
 ├── README.md
 ├── LICENSE
@@ -67,10 +68,8 @@ The data assimilation module updates the model state at discrete, possibly spars
 ## Installation
 
 ```bash
-conda create -n grayscott python=3.11 -y
+conda create env create -f environment.yml -y
 conda activate grayscott
-conda install -c conda-forge fipy matplotlib scipy ffmpeg -y
-pip install -e .
 ```
 
 ## Quick start

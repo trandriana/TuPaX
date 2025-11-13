@@ -57,7 +57,5 @@ include = [
   'src/tupax',
   'README.md',
   'LICENSE',
-  'CITATION.cff',
-  'MANIFEST.in',
-  'examples'
+  'CITATION.cff'
 ]
