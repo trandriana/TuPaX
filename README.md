@@ -69,7 +69,7 @@ The data assimilation module updates the model state at discrete, possibly spars
 ## Installation
 
 ```bash
-conda create env create -f environment.yml -y
+conda env create -f environment.yml -y
 conda activate grayscott
 ```
 
