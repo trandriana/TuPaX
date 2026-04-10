@@ -156,7 +156,7 @@ The above command produces also error plots between the reconstructed solution a
 
 ### Create an animation of the Gray–Scott system with `imex-animate`
 ```
-imex-animate [OPTIONS]
+tupax-animate [OPTIONS]
 ```
 | Option                         | Meaning                                                       | Default                                  |
 | :----------------------------- | :------------------------------------------------------------ | :--------------------------------------- |
@@ -173,11 +173,11 @@ imex-animate [OPTIONS]
 
 **Example**. To generate an animation of both species from the default reconstructed solution:
 ```
-imex-animate --npz-path output_solution/reconstructed_solution.npz
+tupax-animate --npz-path output_solution/reconstructed_solution.npz
 ```
 or observed solution:
 ```
-imex-animate --npz-path output_solution/reconstructed_solution.npz
+tupax-animate --npz-path output_solution/reconstructed_solution.npz
 ```
 This process produces an MP4 animation named `gray_scott.mp4` or `gray_scott_01.mp4`  in the folder `output_animations/`.
 
